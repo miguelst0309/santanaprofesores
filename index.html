@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Cronograma</title>
+  <style>
+    body {
+      margin-top: 120px;
+      font-family: Arial, sans-serif;
+    }
+    .logo {
+      position: absolute;
+      top: 10px;
+      width: 100px;
+      z-index: 10;
+    }
+    .logo-izquierda { left: 10px; }
+    .logo-derecha { right: 10px; }
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 10px 20px;
+      background-color: #ccc;
+      cursor: pointer;
+      border: 1px solid #999;
+      margin: 0 5px;
+      border-radius: 5px;
+    }
+    .tab.active {
+      background-color: #007bff;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+    }
+    #info-adicional {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <img src="https://santana.edu.ec/wp-content/uploads/2023/07/cropped-logo-santana-new-170x105.png" class="logo logo-izquierda" alt="Logo Izquierda">
+  <img src="https://fls.ed.cr/_astro/ib-logo.kj7uLgYS_3qMvl.svg" class="logo logo-derecha" alt="Logo Derecha">
+
+  <h1 style="text-align:center;">Bienvenidos a nuestra página Profesores Santana</h1>
+
+  <div id="info-adicional">Cargando información adicional...</div>
+
+  <p style="text-align:center;">Aquí están las actividades programadas:</p>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="hoy-manana">Hoy y Mañana</div>
+    <div class="tab" data-tab="cronograma-completo">Cronograma Completo</div>
+    <div class="tab" data-tab="enlaces">Enlaces Importantes</div>
+  </div>
+
+  <div id="hoy-manana" class="tab-content active">
+    <h2>Actividades de Hoy</h2>
+    <div id="actividades-hoy">Cargando actividades de hoy...</div>
+    <h2>Actividades de Mañana</h2>
+    <div id="actividades-manana">Cargando actividades de mañana...</div>
+  </div>
+
+  <div id="cronograma-completo" class="tab-content">
+    <h2>Cronograma Completo</h2>
+    <div id="cronograma"></div>
+  </div>
+
+  <div id="enlaces" class="tab-content">
+    <h2>Enlaces Importantes</h2>
+    <table>
+      <tr><td><a href="https://docs.google.com/spreadsheets/d/157CH3fVL6t6HxoTJWvuZeQg93F2cSdba/edit?gid=1634268954#gid=1634268954" target="_blank">
+        Horario personal docente
+      </a></td></tr>
+      <tr><td><a href="https://docs.google.com/spreadsheets/d/18IUGwiU8g_JLj0AV-v5w37YbJVWWpogG/edit?usp=drive_link&ouid=112231612770927447754&rtpof=true&sd=true" target="_blank">
+        Horario de clase por curso
+      </a></td></tr>
+      <tr><td><a href="https://drive.google.com/file/d/1y4Y4-MLmNufq4pPZ2u8QqJv6RkbFgsd-/view?usp=drive_link" target="_blank">
+        Horario de cuidado de espacios
+      </a></td></tr>
+      <tr><td><a href="https://docs.google.com/spreadsheets/d/1YA4LzTF7g-nSBjEEBkivOJz2JC2J4gBz/edit?usp=drive_link&ouid=112231612770927447754&rtpof=true&sd=true" target="_blank">
+        Cronograma de actualización de carteleras
+      </a></td></tr>
+      <tr><td><a href="https://docs.google.com/document/d/1aAziyLWjoHqfaSv94t17XhJBgwHmaI6ajFLfSG3mt_k/edit?tab=t.0" target="_blank">
+        Cronograma minutos cívicos
+      </a></td></tr>
+      <tr><td><a href="https://docs.google.com/document/d/1RC27qylGFQwpA_YYH78qozYLh64_8D8k/edit?usp=drive_link&ouid=112231612770927447754&rtpof=true&sd=true" target="_blank">
+        Estrategias DECE de Bachillerato
+      </a></td></tr>
+      <tr><td><a href="https://docs.google.com/document/d/1RU3UPM5TQpZQ0tWdRI_OEsCJp4bmd9iC/edit?usp=drive_link&ouid=112231612770927447754&rtpof=true&sd=true" target="_blank">
+        Estrategias DECE Básica Superior
+      </a></td></tr>
+    </table>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('.tab').click(function () {
+        $('.tab').removeClass('active');
+        $(this).addClass('active');
+        const tabId = $(this).data('tab');
+        $('.tab-content').removeClass('active');
+        $('#' + tabId).addClass('active');
+      });
+
+      const sheetID = "1aveUwrLydk41vBHOZWkaSrfq_BNFK64HIU94mxFES_I";
+      const apiKey = "AIzaSyDxj1SpUCJtMUOw8DlR8934GmF5X3eY-SE";
+      const apiURL1 = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Hoja%201!A:E?key=${apiKey}`;
+      const apiURL2 = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Hoja%202!A:C?key=${apiKey}`;
+
+      function parseDate(fechaStr) {
+        const partes = fechaStr.trim().split("/");
+        if (partes.length !== 3) return null;
+        const dia = parseInt(partes[0], 10);
+        const mes = parseInt(partes[1], 10) - 1;
+        const anio = parseInt(partes[2], 10);
+        return new Date(anio, mes, dia);
+      }
+
+      function formatDate(date) {
+        const yyyy = date.getFullYear();
+        let mm = date.getMonth() + 1;
+        let dd = date.getDate();
+        if (mm < 10) mm = '0' + mm;
+        if (dd < 10) dd = '0' + dd;
+        return `${dd}/${mm}/${yyyy}`;
+      }
+
+      // HOJA 1 - Cronograma completo y actividades hoy/mañana
+      $.get(apiURL1, function (data) {
+        if (!data.values || data.values.length === 0) {
+          $('#cronograma').html("No hay datos para mostrar.");
+          $('#actividades-hoy').html("No hay actividades para hoy.");
+          $('#actividades-manana').html("No hay actividades para mañana.");
+          return;
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+
+        const todayStr = formatDate(today);
+        const tomorrowStr = formatDate(tomorrow);
+
+        let actividadesHoy = "";
+        let actividadesManana = "";
+        let cronogramaHTML = `
+          <table>
+            <tr>
+              <th>Fecha</th>
+              <th>Día Santana</th>
+              <th>Actividad</th>
+              <th>Descripción</th>
+              <th>Responsable</th>
+            </tr>
+        `;
+
+        data.values.forEach((row, index) => {
+          if (index === 0) return;
+
+          const fechaRaw = row[0] || "";
+          const diaSantana = row[1] || "";
+          const actividad = row[2] || "";
+          const descripcion = row[3] || "";
+          const responsable = row[4] || "";
+
+          const fechaParsed = parseDate(fechaRaw);
+          if (!fechaParsed) return;
+
+          fechaParsed.setHours(0, 0, 0, 0);
+
+          if (fechaParsed >= today) {
+            const fechaFormateada = formatDate(fechaParsed);
+
+            cronogramaHTML += `
+              <tr>
+                <td>${fechaFormateada}</td>
+                <td>${diaSantana}</td>
+                <td>${actividad}</td>
+                <td>${descripcion}</td>
+                <td>${responsable}</td>
+              </tr>
+            `;
+
+            if (fechaFormateada === todayStr) {
+              actividadesHoy += `
+                <p><strong>Actividad:</strong> ${actividad}<br>
+                <strong>Descripción:</strong> ${descripcion}<br>
+                <strong>Responsable:</strong> ${responsable}</p>
+              `;
+            }
+
+            if (fechaFormateada === tomorrowStr) {
+              actividadesManana += `
+                <p><strong>Actividad:</strong> ${actividad}<br>
+                <strong>Descripción:</strong> ${descripcion}<br>
+                <strong>Responsable:</strong> ${responsable}</p>
+              `;
+            }
+          }
+        });
+
+        cronogramaHTML += "</table>";
+        $('#cronograma').html(cronogramaHTML);
+        $('#actividades-hoy').html(actividadesHoy || "No hay actividades para hoy.");
+        $('#actividades-manana').html(actividadesManana || "No hay actividades para mañana.");
+      });
+
+      // HOJA 2 - Mostrar solo la fila con la fecha actual
+      $.get(apiURL2, function (data) {
+        if (!data.values || data.values.length === 0) {
+          $('#info-adicional').html("No hay información adicional disponible.");
+          return;
+        }
+
+        const today = formatDate(new Date());
+        let encontrado = false;
+
+        for (let i = 1; i < data.values.length; i++) {
+          const row = data.values[i];
+          const fecha = row[0] || "";
+          const info1 = row[1] || "";
+          const info2 = row[2] || "";
+
+          if (fecha.trim() === today) {
+            $('#info-adicional').html(`
+              <strong>Fecha: ${fecha}</strong><br>
+              <strong>${info1}</strong><br>
+              <span>${info2}</span>
+            `);
+            encontrado = true;
+            break;
+          }
+        }
+
+        if (!encontrado) {
+          $('#info-adicional').html("No hay información adicional para hoy.");
+        }
+      });
+    });
+  </script>
+
+  <footer>
+    Realizado por Miguel Sarmiento
+  </footer>
+
+
+</body>
+</html>
